@@ -23,6 +23,7 @@ public class HistoryCommand implements Command {
             System.err.println("It's not String!");
         }
 */
+
             if(args.length>1){
                 int n = 0;
                 String str2 = args[1];
@@ -32,8 +33,12 @@ public class HistoryCommand implements Command {
                 } catch (NumberFormatException e) {
                     System.err.println("It's not String!!!");
                 }
-                if(n<session.getSessionUser().userMessageStore.size()) {
-                    for (int i = session.getSessionUser().userMessageStore.size(); i < (session.getSessionUser().userMessageStore.size() - n); i--) {
+
+                if(n<=session.getSessionUser().userMessageStore.size()) {
+                   // System.out.println(session.getSessionUser().userMessageStore.size());
+
+                    for (int i = session.getSessionUser().userMessageStore.size()-1; i >= session.getSessionUser().userMessageStore.size() - n; i--) {
+                        System.out.println(i);
                         System.out.println(session.getSessionUser().userMessageStore.get(i));
 
                     }
@@ -44,7 +49,7 @@ public class HistoryCommand implements Command {
 
             }
         else {
-              //  System.out.println(session.getSessionUser().getName());
+               // System.out.println("UPS");
                 for (int i = 0; i < (session.getSessionUser().userMessageStore.size()); i++) {
                     System.out.println(session.getSessionUser().userMessageStore.get(i));
 

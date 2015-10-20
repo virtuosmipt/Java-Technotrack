@@ -27,35 +27,47 @@ public class InputHandler {
         this.session = session;
         this.commandMap = commandMap;
     }
+    public boolean isCommand(String command){
+    boolean isCom=false;
+        for(Map.Entry<String,Command> entry: commandMap.entrySet()){
+
+            if(entry.getKey().equals(command)){
+                isCom=true;
+            }
+        }
+        return isCom;
+    }
 
     public void handle(String line, Date dateTime) {
         // проверяем на спецсимвол команды
         // Это пример!
 
-        if (line.startsWith("\\")) {
+
             boolean isCommand = false;
             String[] tokens = line.split(" ");
-
-
-            // Получим конкретную команду, но нам не важно что за команда,
-            // у нее есть метод execute()
+                System.out.println(tokens[0]);
+                isCommand= isCommand(tokens[0]);
+        //System.out.println(isCommand);
+            if (isCommand) {
+                // Получим конкретную команду, но нам не важно что за команда,
+                // у нее есть метод execute()
 
 
                 Command cmd = commandMap.get(tokens[0]);   //ПРОПИСАТЬ ИСКЛЮЧЕНИЕ!!!!! на не команду
 
 
                 cmd.execute(session, tokens);
+            }
 
 
 
-
-        } else {
+         else {
             String input;
             SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
             input = format1.format(dateTime);
             input = input + ": ";
             input += line;
-            input += line;
+
             System.out.println(">" + input);
             session.getSessionUser().userMessageStore.add(input);
 

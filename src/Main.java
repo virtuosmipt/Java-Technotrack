@@ -14,10 +14,7 @@ import authorization.AuthorizationService;
 import authorization.FileUserStore;
 import authorization.UserStore;
 import com.sun.javafx.scene.layout.region.Margins;
-import comands.Command;
-import comands.HelpCommand;
-import comands.HistoryCommand;
-import comands.LoginCommand;
+import comands.*;
 import session.IMessageStore;
 import session.Session;
 
@@ -49,15 +46,19 @@ public class Main {
         Command loginCommand = new LoginCommand(authService);
         Command helpCommand = new HelpCommand(commands);
         Command historyCommand = new HistoryCommand();
+        Command userCommand = new UserCommand();
+        Command infoCommand = new InfoCommand();
         commands.put("\\login", loginCommand);
         commands.put("\\help", helpCommand);
         commands.put("\\history",historyCommand);
+        commands.put("\\user",userCommand);
+        commands.put("\\info",infoCommand);
 
         InputHandler handler = new InputHandler(session, commands);
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            String line = scanner.next();
+            String line = scanner.nextLine();
 
 
             Date date = new Date();
