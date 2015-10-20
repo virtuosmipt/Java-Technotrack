@@ -45,7 +45,7 @@ public class InputHandler {
 
             boolean isCommand = false;
             String[] tokens = line.split(" ");
-                System.out.println(tokens[0]);
+              //  System.out.println(tokens[0]);
                 isCommand= isCommand(tokens[0]);
         //System.out.println(isCommand);
             if (isCommand) {
@@ -66,9 +66,13 @@ public class InputHandler {
             SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
             input = format1.format(dateTime);
             input = input + ": ";
-            input += line;
+                for(String str: tokens){
+                    input += str;
+                    input +=" ";
+                }
 
-            System.out.println(">" + input);
+
+            //System.out.println(">" + input);
             session.getSessionUser().userMessageStore.add(input);
 
         }

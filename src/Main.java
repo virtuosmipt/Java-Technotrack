@@ -48,20 +48,25 @@ public class Main {
         Command historyCommand = new HistoryCommand();
         Command userCommand = new UserCommand();
         Command infoCommand = new InfoCommand();
+        Command findCommand = new FindCommand();
         commands.put("\\login", loginCommand);
         commands.put("\\help", helpCommand);
         commands.put("\\history",historyCommand);
         commands.put("\\user",userCommand);
         commands.put("\\info",infoCommand);
-
+        commands.put("\\find",findCommand);
         InputHandler handler = new InputHandler(session, commands);
 
         Scanner scanner = new Scanner(System.in);
         while (true) {
+
+            Date date = new Date();
+
+            System.out.print(">");
             String line = scanner.nextLine();
 
 
-            Date date = new Date();
+
 
 
 
