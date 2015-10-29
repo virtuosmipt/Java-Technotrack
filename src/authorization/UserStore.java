@@ -16,7 +16,7 @@ public interface UserStore {
     // проверить, есть ли пользователь с таким именем
     // если есть, вернуть true
 
-    ArrayList<User> userList = new ArrayList<>();
+   ArrayList<User> userList = new ArrayList<>();
 
     boolean isUserExist(String name);
 
