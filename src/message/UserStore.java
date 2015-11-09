@@ -24,4 +24,5 @@ public interface UserStore {
     User getUserById(Long id);
 
     boolean isUserExist(String name);
+    boolean isUserExist(String name,String password);
 }

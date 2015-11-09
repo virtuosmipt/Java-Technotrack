@@ -38,6 +38,11 @@ public class UserStoreStub implements UserStore {
     }
 
     @Override
+    public boolean isUserExist(String name, String password) {
+        return false;
+    }
+
+    @Override
     public User addUser(User user) {
         User item = users.put(user.getId(), user);
         return item;

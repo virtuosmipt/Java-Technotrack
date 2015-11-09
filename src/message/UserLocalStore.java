@@ -7,7 +7,8 @@ import java.util.ArrayList;
  */
 public class UserLocalStore implements UserStore {
 
-    ArrayList<User> userArrayList = new ArrayList<>();
+  public   ArrayList<User> userArrayList = new ArrayList<>();
+    public long idUsers=0;
 
     @Override
     public User addUser(User user) {
@@ -35,6 +36,19 @@ public class UserLocalStore implements UserStore {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean isUserExist(String name, String password) {
+        boolean isUser=false;
+        for(User user: userArrayList){
+            if(name!=null && name.equals(user.getName())){
+                if(user.getPass()!=null && password.equals(user.getPass())){
+                    isUser=true;
+                }
+            }
+        }
+        return isUser;
     }
 
     @Override

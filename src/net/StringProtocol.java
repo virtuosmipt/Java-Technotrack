@@ -3,9 +3,7 @@ package net;
 
 
 import comands.CommandType;
-import message.LoginMessage;
-import message.Message;
-import message.SendMessage;
+import message.*;
 
 /**
  *
@@ -34,6 +32,15 @@ public class StringProtocol implements Protocol {
                 sendMessage.setChatId(Long.valueOf(tokens[1]));
                 sendMessage.setMessage(tokens[2]);
                 return sendMessage;
+            case ERROR_LOGIN:
+                ErrorLoginMessage errorLoginMessage = new ErrorLoginMessage();
+                errorLoginMessage.setErrorMessage(tokens[1]);
+                return errorLoginMessage;
+            case USER_REGISTER:
+                RegisterMessage registerMessage= new RegisterMessage();
+                registerMessage.setLogin(tokens[1]);
+                registerMessage.setPass(tokens[2]);
+                return registerMessage;
             default:
                 //throw new RuntimeException("Invalid type: " + type);
                 SendMessage sendMsg = new SendMessage();
@@ -59,8 +66,21 @@ public class StringProtocol implements Protocol {
                 builder.append(sendMessage.getMessage()).append(DELIMITER);
                 break;
             case  USER_HELP:
-
                 break;
+            case USER_REGISTER:
+                RegisterMessage registerMessage = (RegisterMessage) msg;
+                builder.append(registerMessage.getLogin()).append(DELIMITER);
+                builder.append(registerMessage.getPass()).append(DELIMITER);
+                break;
+            case ERROR_LOGIN:
+                ErrorLoginMessage errorLoginMessage = (ErrorLoginMessage) msg;
+                builder.append(errorLoginMessage.getErrorLogin()).append(DELIMITER);
+                break;
+            case USER_INFO:
+                InfoMessage infoMessage = (InfoMessage) msg;
+                builder.append(infoMessage.getStringInfo()).append(DELIMITER);
+                break;
+
 
             default:
                 throw new RuntimeException("Invalid type: " + type);

@@ -1,9 +1,7 @@
 package net;
 
 import comands.CommandType;
-import message.LoginMessage;
-import message.Message;
-import message.SendMessage;
+import message.*;
 
 import session.Session;
 
@@ -60,6 +58,7 @@ public class ThreadedClient implements MessageListener {
             if ("q".equals(input)) {
                 return;
             }
+
             client.processInput(input);
         }
     }
@@ -69,12 +68,14 @@ public class ThreadedClient implements MessageListener {
 
         String cmdType = tokens[0];
         switch (cmdType) {
-            case "login":
-                LoginMessage loginMessage = new LoginMessage();
-                loginMessage.setType(CommandType.USER_LOGIN);
-                loginMessage.setLogin(tokens[1]);
-                loginMessage.setPass(tokens[2]);
-                handler.send(loginMessage);
+            case "\\login":
+
+                    LoginMessage loginMessage = new LoginMessage();
+                    loginMessage.setType(CommandType.USER_LOGIN);
+                    loginMessage.setLogin(tokens[1]);
+                    loginMessage.setPass(tokens[2]);
+                    handler.send(loginMessage);
+
                 break;
             case "send":
                 SendMessage sendMessage = new SendMessage();
@@ -83,6 +84,21 @@ public class ThreadedClient implements MessageListener {
                 sendMessage.setMessage(tokens[2]);
                 handler.send(sendMessage);
                 break;
+            case "\\help":
+                HelpMessage helpMessage = new HelpMessage();
+                helpMessage.setType(CommandType.USER_HELP);
+                handler.send(helpMessage);
+                break;
+            case "\\" +
+                    "" +
+                    "register":
+                RegisterMessage registerMessage = new RegisterMessage();
+                registerMessage.setType(CommandType.USER_REGISTER);
+                registerMessage.setLogin(tokens[1]);
+                registerMessage.setPass(tokens[2]);
+                handler.send(registerMessage);
+                break;
+
             default:
                 System.out.println("Invalid input: " + line);
 
@@ -99,6 +115,7 @@ public class ThreadedClient implements MessageListener {
     @Override
     public void onMessage(Session session, Message msg) {
         System.out.printf("%s", ((SendMessage) msg).getMessage());
+        System.out.println();
     }
 
 }
