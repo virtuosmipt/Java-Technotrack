@@ -1,8 +1,10 @@
 package message;
 
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class User {
-    private Long id;
+    private AtomicLong userId = new AtomicLong(0);
     private String name;
     private String pass;
 
@@ -12,11 +14,11 @@ public class User {
     }
 
     public Long getId() {
-        return id;
+        return userId.get();
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.userId = new AtomicLong(id);
     }
 
     public String getName() {
@@ -38,7 +40,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + userId +
                 ", name='" + name + '\'' +
                 '}';
     }

@@ -41,6 +41,34 @@ public class StringProtocol implements Protocol {
                 registerMessage.setLogin(tokens[1]);
                 registerMessage.setPass(tokens[2]);
                 return registerMessage;
+            case USER_NAME:
+                UserMessage userMessage= new UserMessage();
+                userMessage.setLogin(tokens[1]);
+                return userMessage;
+            case USER_PASS:
+                PassMessage passMessage = new PassMessage();
+                passMessage.setOldPass(tokens[1]);
+                passMessage.setNewPass(tokens[2]);
+                return passMessage;
+
+            case USER_INFORMATION:
+                UserInfoMessage userInfoMessage = new UserInfoMessage();
+                if(tokens.length>1){
+                    try {
+
+                        Long id = Long.valueOf(tokens[1]);
+                        userInfoMessage.setId(id);
+                        return userInfoMessage;
+
+
+                    } catch (NumberFormatException e) {
+                        System.err.println("Неверный формат строки!");
+                    }
+                }
+                else {
+                    return userInfoMessage;
+                }
+
             default:
                 //throw new RuntimeException("Invalid type: " + type);
                 SendMessage sendMsg = new SendMessage();
@@ -67,6 +95,11 @@ public class StringProtocol implements Protocol {
                 break;
             case  USER_HELP:
                 break;
+            case USER_PASS:
+                PassMessage passMessage = (PassMessage) msg;
+                builder.append(passMessage.getOldPass()).append(DELIMITER);
+                builder.append(passMessage.getNewPass()).append(DELIMITER);
+                break;
             case USER_REGISTER:
                 RegisterMessage registerMessage = (RegisterMessage) msg;
                 builder.append(registerMessage.getLogin()).append(DELIMITER);
@@ -79,6 +112,16 @@ public class StringProtocol implements Protocol {
             case USER_INFO:
                 InfoMessage infoMessage = (InfoMessage) msg;
                 builder.append(infoMessage.getStringInfo()).append(DELIMITER);
+                break;
+            case USER_NAME:
+                UserMessage userMessage = (UserMessage) msg;
+                builder.append(userMessage.getLogin()).append(DELIMITER);
+                break;
+            case USER_INFORMATION:
+                UserInfoMessage userInfoMessage = (UserInfoMessage) msg;
+                if(userInfoMessage.getId()!=null){
+                    builder.append(userInfoMessage.getId()).append(DELIMITER);
+                }
                 break;
 
 

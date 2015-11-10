@@ -26,7 +26,7 @@ public class SendCommand implements Command {
     @Override
     public void execute(Session session, Message message) {
 
-        SendMessage sendMessage = (SendMessage) message;
+       /* SendMessage sendMessage = (SendMessage) message;
         Chat chat = messageStore.getChatById(sendMessage.getChatId());
         List<Long> parts = chat.getParticipantIds();
         try {
@@ -38,6 +38,6 @@ public class SendCommand implements Command {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

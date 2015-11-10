@@ -1,4 +1,4 @@
-package message;
+//package message;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  *
  */
-public class MessageStoreStub implements MessageStore {
+/*public class MessageStoreStub implements MessageStore {
 
     public static final AtomicLong counter = new AtomicLong(0);
 
@@ -77,4 +77,4 @@ public class MessageStoreStub implements MessageStore {
     public void addUserToChat(Long userId, Long chatId) {
 
     }
-}
+}*/

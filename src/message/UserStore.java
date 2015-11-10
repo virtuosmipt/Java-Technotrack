@@ -1,5 +1,7 @@
 package message;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Хранилище информации о пользователе
  */
@@ -21,7 +23,7 @@ public interface UserStore {
      *
      * Получить пользователя по id, например запрос информации/профиля
      */
-    User getUserById(Long id);
+    User getUserById(AtomicLong id);
 
     boolean isUserExist(String name);
     boolean isUserExist(String name,String password);

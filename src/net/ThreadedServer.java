@@ -1,11 +1,12 @@
 package net;
 
 import comands.*;
+import message.MessageLocalStore;
 import message.MessageStore;
-import message.MessageStoreStub;
+//import message.MessageStoreStub;
 import message.UserStore;
 import message.UserLocalStore;
-import message.UserStoreStub;
+//import message.UserStoreStub;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -48,13 +49,18 @@ public class ThreadedServer {
         SessionManager sessionManager = new SessionManager();
 
         UserLocalStore userLocalStore = new UserLocalStore();
-        MessageStore messageStore = new MessageStoreStub();
+        MessageLocalStore messageLocalStore = new MessageLocalStore();
+       // MessageStore messageStore = new MessageStoreStub();
 
         Map<CommandType, Command> cmds = new HashMap<>();
         cmds.put(CommandType.USER_LOGIN, new LoginCommand(userLocalStore, sessionManager));
-        cmds.put(CommandType.MSG_SEND, new SendCommand(sessionManager, messageStore));
+       // cmds.put(CommandType.MSG_SEND, new SendCommand(sessionManager));
         cmds.put(CommandType.USER_HELP, new HelpCommand(cmds));
         cmds.put(CommandType.USER_REGISTER,new RegisterCommand(userLocalStore,sessionManager));
+        cmds.put(CommandType.USER_NAME, new UserCommand(userLocalStore,sessionManager));
+        cmds.put(CommandType.USER_INFORMATION, new UserInfoCommand(userLocalStore,sessionManager));
+        cmds.put(CommandType.USER_PASS, new PassCommand(userLocalStore,sessionManager));
+        cmds.put(CommandType.USER_CHAT, new ChatCommand(userLocalStore,sessionManager,messageLocalStore));
         CommandHandler handler = new CommandHandler(cmds);
 
 

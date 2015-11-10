@@ -40,7 +40,7 @@ public class LoginCommand implements Command {
                 System.out.println("sush");
                 User user = userLocalStore.getUser(loginMsg.getLogin(), loginMsg.getPass());
                 session.setSessionUser(user);
-                user.setId(1L);
+                //user.setId(1L);
                 // System.out.println(user.getName());
                 sessionManager.registerUser(user.getId(), session.getId());
                 SendMessage sendMessage = new SendMessage();

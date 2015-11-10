@@ -1,6 +1,7 @@
 package message;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by a.borodin on 09.11.2015.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 public class UserLocalStore implements UserStore {
 
   public   ArrayList<User> userArrayList = new ArrayList<>();
-    public long idUsers=0;
+    public AtomicLong id = new AtomicLong(0);
 
     @Override
     public User addUser(User user) {
@@ -29,9 +30,9 @@ public class UserLocalStore implements UserStore {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(AtomicLong id) {
         for (User user: userArrayList){
-            if(id==user.getId()){
+            if(id.get()==user.getId()){
                 return user;
             }
         }

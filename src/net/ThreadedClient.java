@@ -80,7 +80,7 @@ public class ThreadedClient implements MessageListener {
             case "send":
                 SendMessage sendMessage = new SendMessage();
                 sendMessage.setType(CommandType.MSG_SEND);
-                sendMessage.setChatId(Long.valueOf(tokens[1]));
+                sendMessage.setChatId(Long.parseLong(tokens[1]));
                 sendMessage.setMessage(tokens[2]);
                 handler.send(sendMessage);
                 break;
@@ -97,6 +97,42 @@ public class ThreadedClient implements MessageListener {
                 registerMessage.setLogin(tokens[1]);
                 registerMessage.setPass(tokens[2]);
                 handler.send(registerMessage);
+                break;
+            case "\\user":
+                UserMessage userMessage = new UserMessage();
+                userMessage.setType(CommandType.USER_NAME);
+                userMessage.setLogin(tokens[1]);
+                handler.send(userMessage);
+                break;
+            case "\\user_info":
+                UserInfoMessage userInfoMessage = new UserInfoMessage();
+                userInfoMessage.setType(CommandType.USER_INFORMATION);
+                if(tokens.length>1){
+
+
+                    try {
+
+                        Long id = Long.valueOf(tokens[1]);
+                        userInfoMessage.setId(id);
+                        handler.send(userInfoMessage);
+
+                    } catch (NumberFormatException e) {
+                        System.err.println("Неверный формат строки!");
+                    }
+
+
+                }
+                else{
+                    userInfoMessage.setId(null);
+                    handler.send(userInfoMessage);
+                }
+                break;
+            case "\\user_pass":
+                PassMessage passMessage = new PassMessage();
+                passMessage.setType(CommandType.USER_PASS);
+                passMessage.setOldPass(tokens[1]);
+                passMessage.setNewPass(tokens[2]);
+                handler.send(passMessage);
                 break;
 
             default:

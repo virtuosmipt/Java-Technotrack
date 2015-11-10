@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AuthorizationService {
 
     private UserLocalStore userLocalStore;
-    private Long id= 0L;
+    public AtomicLong id = new AtomicLong(0);
 
     public AuthorizationService(UserLocalStore userLocalStore) {
         this.userLocalStore = userLocalStore;
@@ -98,8 +98,8 @@ public class AuthorizationService {
             creatUser(name, pass);
         }
         User newUser = new User(name, pass);
-        newUser.setId(id);
-        id++;
+        newUser.setId(id.get());
+        id.incrementAndGet();
 
         userLocalStore.addUser(newUser);
         return newUser;

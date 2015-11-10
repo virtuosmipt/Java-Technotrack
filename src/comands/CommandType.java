@@ -10,6 +10,10 @@ public enum CommandType {
     USER_COMAND,
     MSG_SEND,
     ERROR_LOGIN,
-    USER_INFO
+    USER_INFO,
+    USER_NAME,
+    USER_INFORMATION,
+    USER_PASS,
+    USER_CHAT,
 
 }
