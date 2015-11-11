@@ -25,8 +25,8 @@ public class SocketConnectionHandler implements ConnectionHandler {
     private OutputStream out;
     private Protocol protocol;
     private Session session;
-    //ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-    //ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+   // ObjectInputStream ois;
+    //ObjectOutputStream oos;
 
     public SocketConnectionHandler(Protocol protocol, Session session, Socket socket) throws IOException {
         this.protocol = protocol;
@@ -35,6 +35,8 @@ public class SocketConnectionHandler implements ConnectionHandler {
         session.setConnectionHandler(this);
         in = socket.getInputStream();
         out = socket.getOutputStream();
+        // ois = new ObjectInputStream(socket.getInputStream());
+        // oos = new ObjectOutputStream(socket.getOutputStream());
 
     }
 
@@ -44,11 +46,11 @@ public class SocketConnectionHandler implements ConnectionHandler {
 
         // TODO: здесь должен быть встроен алгоритм кодирования/декодирования сообщений
         // то есть требуется описать протокол
-         out.write(protocol.encode(msg));
+        out.write(protocol.encode(msg));
         out.flush();
 
       //  oos.writeObject(msg);
-       // oos.flush();
+      //  oos.flush();
 
     }
 
@@ -66,13 +68,15 @@ public class SocketConnectionHandler implements ConnectionHandler {
 
     @Override
     public void run() {
+
         final byte[] buf = new byte[1024 * 64];
         while (!Thread.currentThread().isInterrupted()) {
             try {
                 int read = in.read(buf);
-                if (read > 0) {
+                 if (read > 0) {
+                    // System.out.println("zashel");
                     Message msg = protocol.decode(Arrays.copyOf(buf, read));
-
+                   // Message msg = (Message) ois.readObject();
                     msg.setSender(session.getId());
                    // System.out.println("Server send you: "+  ((SendMessage) msg).getMessage() );
                     // Уведомим всех подписчиков этого события

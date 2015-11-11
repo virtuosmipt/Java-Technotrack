@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  *
  */
-public abstract class Message  implements Serializable {
+public abstract class Message   {
 
     private Long id;
     private Long sender;

@@ -20,7 +20,7 @@ public class HelpCommand implements Command {
 
     @Override
     public void execute(Session session, Message msg) {
-        System.out.println("Executing help");
+        //System.out.println("Executing help");
         /*
         В простом случае просто выводим данные на консоль
         Если будем работать чере сеть, то команде придется передать также объект для работы с сетью

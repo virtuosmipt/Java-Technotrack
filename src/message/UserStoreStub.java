@@ -1,16 +1,18 @@
 package message;
 
+import java.util.AbstractCollection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  *
  */
 
-public class UserStoreStub implements UserStore {
+/*public class UserStoreStub implements UserStore {
 
-    private static Map<Long, User> users = new HashMap<>();
-
+    private static Map<AtomicLong, User> users = new HashMap<>();
+    public AtomicLong id = new AtomicLong(0);
     @Override
     public boolean isUserExist(String name) {
         return false;
@@ -20,7 +22,7 @@ public class UserStoreStub implements UserStore {
 
     static {
         User u0 = new User("A", "1");
-        u0.setId(0L);
+        u0.setId(id.incrementAndGet());
 
         User u1 = new User("B", "1");
         u1.setId(1L);
@@ -35,6 +37,11 @@ public class UserStoreStub implements UserStore {
         users.put(1L, u1);
         users.put(2L, u2);
         users.put(3L, u3);
+    }
+
+    @Override
+    public boolean isUserExist(String name, String password) {
+        return false;
     }
 
     @Override
@@ -58,3 +65,4 @@ public class UserStoreStub implements UserStore {
         return null;
     }
 }
+*/

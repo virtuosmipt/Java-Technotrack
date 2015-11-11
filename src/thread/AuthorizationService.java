@@ -6,10 +6,12 @@ import message.UserStore;
 import message.UserLocalStore;
 import session.Session;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class AuthorizationService {
 
     private UserLocalStore userLocalStore;
+    public AtomicLong id = new AtomicLong(0);
 
     public AuthorizationService(UserLocalStore userLocalStore) {
         this.userLocalStore = userLocalStore;
@@ -76,6 +78,8 @@ public class AuthorizationService {
         System.out.println("Enter your Password!");
         String pass = scanner.next();
         User newUser = new User(name, pass);
+        //newUser.setId(userLocalStore.idUsers++);
+
         userLocalStore.addUser(newUser);
 
 
@@ -94,6 +98,9 @@ public class AuthorizationService {
             creatUser(name, pass);
         }
         User newUser = new User(name, pass);
+        newUser.setId(id.get());
+        id.incrementAndGet();
+
         userLocalStore.addUser(newUser);
         return newUser;
     }

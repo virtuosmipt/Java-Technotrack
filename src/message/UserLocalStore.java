@@ -1,13 +1,15 @@
 package message;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by a.borodin on 09.11.2015.
  */
 public class UserLocalStore implements UserStore {
 
-    ArrayList<User> userArrayList = new ArrayList<>();
+  public   ArrayList<User> userArrayList = new ArrayList<>();
+    public AtomicLong id = new AtomicLong(0);
 
     @Override
     public User addUser(User user) {
@@ -28,13 +30,26 @@ public class UserLocalStore implements UserStore {
     }
 
     @Override
-    public User getUserById(Long id) {
+    public User getUserById(AtomicLong id) {
         for (User user: userArrayList){
-            if(id==user.getId()){
+            if(id.get()==user.getId()){
                 return user;
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean isUserExist(String name, String password) {
+        boolean isUser=false;
+        for(User user: userArrayList){
+            if(name!=null && name.equals(user.getName())){
+                if(user.getPass()!=null && password.equals(user.getPass())){
+                    isUser=true;
+                }
+            }
+        }
+        return isUser;
     }
 
     @Override
