@@ -14,6 +14,10 @@ public enum CommandType {
     USER_NAME,
     USER_INFORMATION,
     USER_PASS,
-    USER_CHAT,
+    CHAT_CREAT,
+    CHAT_LIST,
+    CHAT_SEND,
+    CHAT_FIND,
+    CHAT_FIND_OUT
 
 }

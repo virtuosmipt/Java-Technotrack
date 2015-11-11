@@ -50,7 +50,43 @@ public class StringProtocol implements Protocol {
                 passMessage.setOldPass(tokens[1]);
                 passMessage.setNewPass(tokens[2]);
                 return passMessage;
-
+            case CHAT_CREAT:
+                ChatCreatMessage chatCreatMessage = new ChatCreatMessage();
+                for(int i=1;i<tokens.length;i++){
+                    chatCreatMessage.userIdList.add(Long.valueOf(tokens[i]));
+                }
+                return chatCreatMessage;
+            case CHAT_LIST:
+                ChatListMessage chatListMessage = new ChatListMessage();
+                if(tokens.length>1){
+                    for (int i=1;i<tokens.length;i++){
+                        chatListMessage.chatsId.add(Long.valueOf(tokens[i]));
+                    }
+                }
+                return chatListMessage;
+            case CHAT_FIND:
+                ChatFindMessage chatFindMessage = new ChatFindMessage();
+                chatFindMessage.setStringFind(tokens[2]);
+                chatFindMessage.setIdChat(Long.valueOf(tokens[1]));
+                return chatFindMessage;
+            case CHAT_FIND_OUT:
+                ChatFindMessage chatFindMessage1 = new ChatFindMessage();
+                if(tokens.length>1){
+                chatFindMessage1.findingStringList.add("this String don't find in this ChatId");
+                }
+                else {
+                    for(int i=1;i<tokens.length;i++){
+                        chatFindMessage1.findingStringList.add(tokens[i]);
+                    }
+                }
+                return chatFindMessage1;
+            case CHAT_SEND:
+                ChatSendMessage chatSendMessage = new ChatSendMessage();
+                for(int i=1;i<tokens.length-1;i++){
+                    chatSendMessage.chatsId.add(Long.valueOf(tokens[i]));
+                }
+                chatSendMessage.setMessages(tokens[tokens.length-1]);
+                return chatSendMessage;
             case USER_INFORMATION:
                 UserInfoMessage userInfoMessage = new UserInfoMessage();
                 if(tokens.length>1){
@@ -93,7 +129,7 @@ public class StringProtocol implements Protocol {
                 builder.append(sendMessage.getChatId()).append(DELIMITER);
                 builder.append(sendMessage.getMessage()).append(DELIMITER);
                 break;
-            case  USER_HELP:
+            case USER_HELP:
                 break;
             case USER_PASS:
                 PassMessage passMessage = (PassMessage) msg;
@@ -122,6 +158,38 @@ public class StringProtocol implements Protocol {
                 if(userInfoMessage.getId()!=null){
                     builder.append(userInfoMessage.getId()).append(DELIMITER);
                 }
+                break;
+            case CHAT_CREAT:
+                ChatCreatMessage chatCreatMessage = (ChatCreatMessage) msg;
+                for(Long lg: chatCreatMessage.userIdList){
+                    builder.append(lg).append(DELIMITER);
+                }
+                break;
+            case CHAT_LIST:
+                ChatListMessage chatListMessage = (ChatListMessage) msg;
+                if(chatListMessage.chatsId.isEmpty()==false){
+                    for(Long lg: chatListMessage.chatsId){
+                        builder.append(lg).append(DELIMITER);
+                    }
+                }
+                break;
+            case CHAT_FIND:
+                ChatFindMessage chatFindMessage = (ChatFindMessage) msg;
+                    builder.append(chatFindMessage.getIdChat()).append(DELIMITER);
+                    builder.append(chatFindMessage.getStringFind()).append(DELIMITER);
+                break;
+            case CHAT_FIND_OUT:
+                ChatFindMessage chatFindMessage1 =(ChatFindMessage) msg;
+                    for(String str: chatFindMessage1.findingStringList){
+                        builder.append(str).append(DELIMITER);
+                    }
+                break;
+            case CHAT_SEND:
+                ChatSendMessage chatSendMessage = (ChatSendMessage) msg;
+                for(Long lg: chatSendMessage.chatsId){
+                    builder.append(lg).append(DELIMITER);
+                }
+                builder.append(chatSendMessage.getMessages()).append(DELIMITER);
                 break;
 
 

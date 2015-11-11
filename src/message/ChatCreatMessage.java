@@ -7,10 +7,10 @@ import java.util.ArrayList;
 /**
  * Created by a.borodin on 10.11.2015.
  */
-public class ChatMessage extends Message {
+public class ChatCreatMessage extends Message {
     public ArrayList<Long> userIdList = new ArrayList<>();
-    public ChatMessage() {
-        setType(CommandType.USER_CHAT);
+    public ChatCreatMessage() {
+        setType(CommandType.CHAT_CREAT);
     }
 
 }

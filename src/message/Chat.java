@@ -12,8 +12,10 @@ public class Chat {
     /**
      * Храним список идентификаторов
      */
+
     private List<Long> messageIds = new ArrayList<>();
-    private List<Long> participantIds = new ArrayList<>();
+    private ArrayList<Long> participantIds = new ArrayList<>();
+    private ArrayList<String> messageByChat = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -26,16 +28,17 @@ public class Chat {
     public List<Long> getMessageIds() {
         return messageIds;
     }
+    public ArrayList<String> getMessageByChat () {return messageByChat;}
 
     public void setMessageIds(List<Long> messageIds) {
         this.messageIds = messageIds;
     }
 
-    public List<Long> getParticipantIds() {
+    public ArrayList<Long> getParticipantIds() {
         return participantIds;
     }
 
-    public void setParticipantIds(List<Long> participantIds) {
+    public void setParticipantIds(ArrayList<Long> participantIds) {
         this.participantIds = participantIds;
     }
 

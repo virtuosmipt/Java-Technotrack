@@ -2,9 +2,7 @@ package net;
 
 import comands.*;
 import message.MessageLocalStore;
-import message.MessageStore;
 //import message.MessageStoreStub;
-import message.UserStore;
 import message.UserLocalStore;
 //import message.UserStoreStub;
 
@@ -60,7 +58,10 @@ public class ThreadedServer {
         cmds.put(CommandType.USER_NAME, new UserCommand(userLocalStore,sessionManager));
         cmds.put(CommandType.USER_INFORMATION, new UserInfoCommand(userLocalStore,sessionManager));
         cmds.put(CommandType.USER_PASS, new PassCommand(userLocalStore,sessionManager));
-        cmds.put(CommandType.USER_CHAT, new ChatCommand(userLocalStore,sessionManager,messageLocalStore));
+        cmds.put(CommandType.CHAT_CREAT, new ChatCreatCommand(userLocalStore,sessionManager,messageLocalStore));
+        cmds.put(CommandType.CHAT_LIST, new ChatListCommand(userLocalStore,sessionManager,messageLocalStore));
+        cmds.put(CommandType.CHAT_SEND, new ChatSendCommand(userLocalStore,sessionManager,messageLocalStore));
+        cmds.put(CommandType.CHAT_FIND, new ChatFindCommand(userLocalStore,sessionManager,messageLocalStore));
         CommandHandler handler = new CommandHandler(cmds);
 
 

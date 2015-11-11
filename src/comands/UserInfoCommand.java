@@ -45,8 +45,9 @@ public class UserInfoCommand implements Command {
             else{
                 InfoMessage infoMessage= new InfoMessage();
                 userLocalStore.getUserById(new AtomicLong(message.getId()));
-                infoMessage.setStringInfo("You Username:" + userLocalStore.getUserById(new AtomicLong(message.getId())).getName()
-                        + "\n" + "You Password: " + userLocalStore.getUserById(new AtomicLong(message.getId())).getPass());
+                infoMessage.setStringInfo("\n"+"You Username:" + userLocalStore.getUserById(new AtomicLong(message.getId())).getName()
+                        + "\n" + "You Password: " + userLocalStore.getUserById(new AtomicLong(message.getId())).getPass()
+                        + "\n" + "you ID: " + userLocalStore.getUserById(new AtomicLong(message.getId())).getId());
                 try {
                     session.getConnectionHandler().send(infoMessage);
                 }
