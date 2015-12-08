@@ -1,18 +1,23 @@
 package ru.mail.track.message;
 
+import ru.mail.track.jdbc.DAO.Identified;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  */
-public class Chat {
+public class Chat implements Identified {
 
     private Long id;
+    private String title;
+    public Chat (){this.title="Java";}
     /**
      * Храним список идентификаторов
      */
-
+    public String getTitle() { return title;}
+    public void setTitle(String title) { this.title = title;}
     private List<Long> messageIds = new ArrayList<Long>();
     private ArrayList<Long> participantIds = new ArrayList<Long>();
     private ArrayList<String> messageByChat = new ArrayList<String>();

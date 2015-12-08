@@ -6,7 +6,7 @@ import ru.mail.track.message.UserLocalStore;
 import ru.mail.track.message.UserStore;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
-import ru.mail.track.thread.AuthorizationService;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,6 +56,7 @@ public class ChatHistoryCommand implements Command {
                 try {
                     Long idChat = Long.valueOf(chatHistoryMessage.getArgs()[1]);
                     Message historyMessage = new Message();
+
                     historyMessage.setType(CommandType.CHAT_HISTORY);
                     if(messageLocalStore.getChatById(idChat)==null){
                         Message newInfoMessage = new Message();
@@ -70,13 +71,18 @@ public class ChatHistoryCommand implements Command {
                     }
                     else {
                         boolean isUserHasChat=false;
-                        for(Long lg:messageLocalStore.getUsersByChat(idChat)){
+                        for(Long lg:messageLocalStore.getParticipantByChatId(idChat)){
                             if(session.getSessionUser().getId()==lg){
                                 isUserHasChat=true;
                             }
                         }
                             if(isUserHasChat) {
-                                historyMessage.setStringArrayList(messageLocalStore.getChatById(idChat).getMessageByChat());
+                                ArrayList<Long> listik ;
+                                      listik  = messageLocalStore.getMessagesFromChat(idChat);
+                                for(Long lg: listik){
+                                    historyMessage.getStringArrayList().add(messageLocalStore.getMessageById(lg).getMessage());
+                                }
+                                //historyMessage.setStringArrayList();
                                 try {
                                     session.getConnectionHandler().send(historyMessage);
 

@@ -1,7 +1,10 @@
 package ru.mail.track.net;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.mail.track.comands.*;
+import ru.mail.track.jdbc.DAO.DAOFactory;
+import ru.mail.track.jdbc.DAO.DAOSql.SqlFactoryDao;
 import ru.mail.track.message.MessageLocalStore;
 //import message.MessageStoreStub;
 import ru.mail.track.message.UserLocalStore;
@@ -28,7 +31,7 @@ public class ThreadedServer {
     private Protocol protocol;
     private SessionManager sessionManager;
     private CommandHandler commandHandler;
-
+    static Logger log = LoggerFactory.getLogger(ThreadedServer.class);
 
     public ThreadedServer(Protocol protocol, SessionManager sessionManager, CommandHandler commandHandler) {
         try {
@@ -46,9 +49,9 @@ public class ThreadedServer {
     public static void main(String[] args) {
         Protocol protocol = new JsonProtocol();
         SessionManager sessionManager = new SessionManager();
-
-        UserLocalStore userLocalStore = new UserLocalStore();
-        MessageLocalStore messageLocalStore = new MessageLocalStore();
+        DAOFactory daoFactory = new SqlFactoryDao();
+        UserLocalStore userLocalStore = new UserLocalStore(daoFactory);
+        MessageLocalStore messageLocalStore = new MessageLocalStore(daoFactory);
        // MessageStore messageStore = new MessageStoreStub();
 
         Map<CommandType, Command> cmds = new HashMap<>();
@@ -68,7 +71,7 @@ public class ThreadedServer {
 
 
         ThreadedServer server = new ThreadedServer(protocol, sessionManager, handler);
-
+        log.info("All services is good starting!");
         try {
             server.startServer();
         } catch (Exception e) {

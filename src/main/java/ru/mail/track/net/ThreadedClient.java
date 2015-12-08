@@ -2,7 +2,8 @@ package ru.mail.track.net;
 
 import ru.mail.track.comands.CommandType;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
 
@@ -191,34 +192,6 @@ public class ThreadedClient implements MessageListener {
             System.out.println("Null^(");
         }
     }
-       /* if(msg.getType().toString().equals("CHAT_LIST")){
-            ChatListMessage chatListMessage = (ChatListMessage) msg;
-            System.out.println("You have this chatId");
-            if(chatListMessage.chatsId.isEmpty()){
-                System.out.println("you don't have chats");
-            }
-            else {
-                for (Long lg : chatListMessage.chatsId) {
-                    System.out.println(lg + ";");
-                }
-            }
-        }
-        if(msg.getType().equals("USER_INFO")){
-            InfoMessage infoMessage = (InfoMessage) msg;
 
-            System.out.println(((InfoMessage) msg).getStringInfo());
-        }
-        /*if(msg.getType().toString().equals("CHAT_FIND_OUT")){
-            ChatFindMessage chatFindMessage = (ChatFindMessage) msg;
-            for(String str: chatFindMessage.findingStringList){
-                System.out.println(str);
-            }
-        }*/
-       /* else {
-            System.out.println(msg.getType());
-            System.out.printf("%s", ((SendMessage) msg).getMessage());
-            System.out.println();
-        }
-    }*/
 
 }

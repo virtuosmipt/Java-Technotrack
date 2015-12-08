@@ -17,7 +17,7 @@ public  class Message implements Serializable {
     private String[] args;
     private String infoString;
     private ArrayList<Long> infoLong;
-    private ArrayList<String> stringArrayList;
+    private ArrayList<String> stringArrayList = new ArrayList<>();
 
     private CommandType type;
 

@@ -26,17 +26,21 @@ public interface MessageStore {
     /**
      * Получить информацию о сообщении
      */
-    Message getMessageById(Long messageId);
+    ChatMessage getMessageById(Long messageId);
 
     /**
      * Добавить сообщение в чат
      */
-    void addMessage(Long chatId, Message message);
+    void addMessage(ChatMessage message);
 
     /**
      * Добавить пользователя к чату
      */
     void addUserToChat(Long userId, Long chatId);
+    /**
+     * Получить всех участников чата
+     */
+    List<Long> getParticipantByChatId(Long chatId);
 
 
 }

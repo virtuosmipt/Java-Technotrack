@@ -3,7 +3,7 @@ package ru.mail.track.comands;
 import ru.mail.track.message.*;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
-import ru.mail.track.thread.AuthorizationService;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
 import java.util.ArrayList;

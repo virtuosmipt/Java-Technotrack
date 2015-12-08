@@ -18,12 +18,14 @@ public interface UserStore {
      * Получить пользователя по логину/паролю
      */
     User getUser(String login, String pass);
+    User getUser (Long id);
+    void update(User user);
 
     /**
      *
      * Получить пользователя по id, например запрос информации/профиля
      */
-    User getUserById(AtomicLong id);
+
 
     boolean isUserExist(String name);
     boolean isUserExist(String name,String password);

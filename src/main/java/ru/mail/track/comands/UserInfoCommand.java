@@ -3,7 +3,7 @@ package ru.mail.track.comands;
 import ru.mail.track.message.*;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
-import ru.mail.track.thread.AuthorizationService;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class UserInfoCommand implements Command {
 
-    private UserStore userLocalStore = new UserLocalStore();
+    private UserStore userLocalStore ;
     private SessionManager sessionManager;
     private AuthorizationService authorizationService ;
 
@@ -69,10 +69,29 @@ public class UserInfoCommand implements Command {
                     infoMessage.setType(CommandType.USER_INFO);
                     try {
                         Long id = Long.valueOf(userInfoMessage.getArgs()[1]);
-                        userLocalStore.getUserById(new AtomicLong(id));
-                        infoMessage.setInfoString("\n" + "You Username:" + userLocalStore.getUserById(new AtomicLong(id)).getName()
-                                + "\n" + "You Password: " + userLocalStore.getUserById(new AtomicLong(id)).getPass()
-                                + "\n" + "you ID: " + userLocalStore.getUserById(new AtomicLong(id)).getId());
+                        User user = userLocalStore.getUser(id);
+                        //System.out.println(user.getName());
+                        if(user!=null) {
+                            infoMessage.setInfoString("\n" + "You Username:" + user.getName()
+                                    + "\n" + "You Password: " + user.getPass()
+                                    + "\n" + "you ID: " + user.getId());
+                            try {
+                                session.getConnectionHandler().send(infoMessage);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else {Message newInfoMessage = new Message();
+                            newInfoMessage.setType(CommandType.USER_INFO);
+                            newInfoMessage.setInfoString("This Id is not exist!");
+
+                            try {
+                                session.getConnectionHandler().send(newInfoMessage);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                     }catch (NumberFormatException e) {
                         Message newInfoMessage = new Message();
                         newInfoMessage.setType(CommandType.USER_INFO);

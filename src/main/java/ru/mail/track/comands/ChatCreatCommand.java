@@ -3,16 +3,17 @@ package ru.mail.track.comands;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
-import ru.mail.track.thread.AuthorizationService;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by a.borodin on 10.11.2015.
  */
 public class ChatCreatCommand implements Command {
-    private UserStore userLocalStore = new UserLocalStore();
+    private UserStore userLocalStore ;
     private SessionManager sessionManager;
     private AuthorizationService authorizationService ;
     private MessageLocalStore messageLocalStore;
@@ -39,7 +40,7 @@ public class ChatCreatCommand implements Command {
                 e.printStackTrace();
             }
         } else {
-
+            Long simpleId;
             boolean myBool=false;
             Message chatCreatMessage = (Message) message;
             if(chatCreatMessage.getArgs().length<2){
@@ -59,7 +60,11 @@ public class ChatCreatCommand implements Command {
                 boolean mybool=false;
                 for(int i =1;i< chatCreatMessage.getArgs().length;i++){
                     try {
-                        userIdList.add(Long.valueOf(chatCreatMessage.getArgs()[i]));
+                        simpleId=Long.valueOf(chatCreatMessage.getArgs()[i]);
+                        if(userLocalStore.getUser(simpleId)!=null){
+                            userIdList.add(Long.valueOf(chatCreatMessage.getArgs()[i]));
+                        }
+
                     }catch (NumberFormatException e) {
                         Message newInfoMessage = new Message();
                         newInfoMessage.setType(CommandType.USER_INFO);
@@ -86,8 +91,10 @@ public class ChatCreatCommand implements Command {
                         }
                     }
                     if (myBool) {
+                        Chat chat = new Chat();
+                        chat.setParticipantIds(userIdList);
 
-                       messageLocalStore.chatCreat(userIdList);
+                        messageLocalStore.chatCreat(chat);
 
 
                         // Chat chat = messageStore.getChatById(sendMessage.getChatId());

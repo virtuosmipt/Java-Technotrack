@@ -1,12 +1,12 @@
 package ru.mail.track.jdbc.DAO;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import ru.mail.track.jdbc.DAO.PersistException;
+
+import oracle.jdbc.proxy.annotation.Pre;
+import ru.mail.track.jdbc.DAO.Exception.PersistException;
 
 /**
  * Created by a.borodin on 24.11.2015.
@@ -16,9 +16,8 @@ import ru.mail.track.jdbc.DAO.PersistException;
  * Абстрактный класс предоставляющий базовую реализацию CRUD операций с использованием JDBC.
  *
  * @param <T>  тип объекта персистенции
- * @param <PK> тип первичного ключа
  */
-public abstract class AbstractJDBCDao<T extends  Identified <PK>,PK extends Integer> implements GenericDAO<T,PK> {
+public abstract class AbstractJDBCDao<T extends  Identified> implements GenericDAO<T> {
     private Connection connection;
 
     public AbstractJDBCDao(Connection connection){
@@ -51,6 +50,11 @@ public abstract class AbstractJDBCDao<T extends  Identified <PK>,PK extends Inte
      * DELETE FROM [Table] WHERE id= ?;
      */
     public abstract String getDeleteQuery();
+    public abstract String getLastObject();
+
+    protected abstract String getSequence();
+
+    protected abstract String getSeqClass();
 
     /**
      * Разбирает ResultSet и возвращает список объектов соответствующих содержимому ResultSet.
@@ -68,10 +72,6 @@ public abstract class AbstractJDBCDao<T extends  Identified <PK>,PK extends Inte
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws PersistException;
 
 
-    @Override
-    public T create() throws PersistException {
-        return null;
-    }
 
     @Override
     public T persist(T object) throws PersistException {
@@ -93,18 +93,23 @@ public abstract class AbstractJDBCDao<T extends  Identified <PK>,PK extends Inte
             throw new PersistException(e);
         }
         // Получаем только что вставленную запись
-        sql = getSelectQuery() + " WHERE id = last_insert_id();";
+        // Получаем только что вставленную запись
+        //sql = getSelectQuery() + " WHERE id = currval(" + getSequence() + "('" + getSeqClass() +"','id'));";
+        sql = getLastObject();
+
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            //statement.setString(1,getSeqClass());
             ResultSet rs = statement.executeQuery();
-            ArrayList<T> list = parseResultSet(rs);
-            if ((list == null) || (list.size() != 1)) {
-                throw new PersistException("Exception on findByPK new persist data.");
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                persistInstance = getByPK(id);
+                return persistInstance;
             }
-            persistInstance = list.iterator().next();
+
         } catch (Exception e) {
             throw new PersistException(e);
         }
-        return persistInstance;
+       return null;
     }
 
     @Override

@@ -1,11 +1,10 @@
 package ru.mail.track.jdbc.DAO;
 
-import java.io.Serializable;
-import java.sql.SQLException;
+import ru.mail.track.jdbc.DAO.Exception.PersistException;
 
-import java.util.Collection;
+import java.io.Serializable;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by a.borodin on 23.11.2015.
@@ -14,11 +13,8 @@ import java.util.List;
 /**
  * Унифицированный интерфейс управления персистентным состоянием объектов
  * @param <T> тип объекта персистенции
- * @param <PK> тип первичного ключа
  */
-public interface GenericDAO <T, PK extends Serializable> {
-    /** Создает новую запись и соответствующий ей объект */
-    T create() throws PersistException;
+public interface GenericDAO <T extends Identified> {
 
     /** Создает новую запись, соответствующую объекту object */
      T persist(T object)  throws PersistException;
@@ -29,7 +25,7 @@ public interface GenericDAO <T, PK extends Serializable> {
      void update(T object) throws PersistException;
 
     /** Удаляет запись об объекте из базы данных */
-     void delete(T object) throws PersistException;
+      void delete(T object) throws PersistException;
 
     /** Возвращает список объектов соответствующих всем записям в базе данных */
      ArrayList<T> getAll() throws PersistException;

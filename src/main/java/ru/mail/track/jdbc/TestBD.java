@@ -13,21 +13,19 @@ public class TestBD {
 
         Statement stmt;
         String sql;
-        sql = "INSERT INTO User VALUES ('Paul',2, 'paul')";
+      //  sql = "INSERT INTO users VALUES ('a',1,'a')";
+
+     //   stmt = c.createStatement();
+      //  stmt.executeUpdate(sql);
+      //  stmt.close();
+        //c.commit();
+      //  c.close();
 
         stmt = c.createStatement();
-        stmt.executeUpdate(sql);
-        stmt.close();
-        c.commit();
-        c.close();
-
-
-
-       /* stmt = c.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM User;");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM users ORDER BY id DESC LIMIT 1;");
         while (rs.next()) {
-            int id = rs.getInt("id");
             String name = rs.getString("username");
+            int id = rs.getInt("id");
             String password = rs.getString("password");
 
             System.out.println("ID = " + id);
@@ -87,7 +85,7 @@ public class TestBD {
         }
     }
 
-*/
 
-    }
+
+
 }

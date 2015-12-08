@@ -2,21 +2,26 @@ package ru.mail.track.comands;
 
 
 
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.mail.track.message.*;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
-import ru.mail.track.thread.AuthorizationService;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
+
 
 /**
  * Выполняем авторизацию по этой команде
  */
 public class LoginCommand implements Command {
 
+   public Logger log = LoggerFactory.getLogger(LoginCommand.class);
 
-
-    private UserStore userLocalStore = new UserLocalStore();
+    private UserStore userLocalStore;
     private SessionManager sessionManager;
     private AuthorizationService authorizationService ;
 
@@ -90,7 +95,7 @@ public class LoginCommand implements Command {
                         // System.out.println(user.getName());
                         // sessionManager.registerUser(user.getId(), session.getId());
                         //  System.out.println(session.getSessionUser().getId());
-                        //InfoMessage infoMessage = new InfoMessage(session);
+
                         Message infoMessage = new Message();
                         infoMessage.setType(CommandType.USER_INFO);
                         infoMessage.setInfoString("You are didn't find in our base, please enter \\login");

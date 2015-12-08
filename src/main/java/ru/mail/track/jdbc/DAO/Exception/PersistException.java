@@ -1,4 +1,4 @@
-package ru.mail.track.jdbc.DAO;
+package ru.mail.track.jdbc.DAO.Exception;
 
 /**
  * Created by a.borodin on 24.11.2015.

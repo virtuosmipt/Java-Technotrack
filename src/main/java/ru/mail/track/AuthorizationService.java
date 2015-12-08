@@ -1,4 +1,4 @@
-package ru.mail.track.thread;
+package ru.mail.track;
 
 
 import ru.mail.track.message.User;
@@ -97,9 +97,11 @@ public class AuthorizationService {
             creatUser(name, pass);
         }
         User newUser = new User(name, pass);
-        newUser.setId(id.get());
-        id.incrementAndGet();
-
+       // newUser.setId(id.get());
+       // id.incrementAndGet();
+        System.out.println(newUser.getName());
+        System.out.println(newUser.getPass());
+       // System.out.println(newUser.getId());
         userLocalStore.addUser(newUser);
         return newUser;
     }

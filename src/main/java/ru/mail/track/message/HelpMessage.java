@@ -17,6 +17,7 @@ public class HelpMessage extends Message {
         listCommand.add("\\user_info <UserId> - Information about Some User(ID)");
         listCommand.add("\\user_pass <Old_Pass> <New_Pass> - Create new Password");
         listCommand.add("\\chat_create <id_user> - Create new chat with User");
+        listCommand.add("\\chat_list  - Your Chats");
         listCommand.add("\\chat_send <id_chat> <message> - Send Message in Chat");
         listCommand.add("\\chat_history <id_chat> - History message in Chat");
         listCommand.add("\\chat_find <id_chat> <word> - find word in Chat");

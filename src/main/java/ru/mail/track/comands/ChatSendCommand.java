@@ -4,7 +4,7 @@ package ru.mail.track.comands;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.message.*;
 import ru.mail.track.session.Session;
-import ru.mail.track.thread.AuthorizationService;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Created by a.borodin on 11.11.2015.
  */
 public class ChatSendCommand implements Command {
-    private UserStore userLocalStore = new UserLocalStore();
+    private UserStore userLocalStore;
     private SessionManager sessionManager;
     private AuthorizationService authorizationService;
     private MessageLocalStore messageLocalStore;
@@ -66,23 +66,26 @@ public class ChatSendCommand implements Command {
                         }
 
                     }
-                    for (int i = 2; i < chatSendMessage.getArgs().length; i++) {
-                        sendMessage = sendMessage.concat(chatSendMessage.getArgs()[i]).concat(" ");
-                    }
-                    messageLocalStore.getChatById(idChat).getMessageByChat().add(sendMessage);
-                    usersByChat = messageLocalStore.getUsersByChat(idChat);
-                    Message infoMessage = new Message();
-                    infoMessage.setType(CommandType.USER_INFO);
-                    infoMessage.setInfoString(sendMessage);
-                    try {
-                        for (Long userId : usersByChat) {
-                            Session userSession = sessionManager.getSessionByUser(userId);
-                            if (userSession != null) {
-                                userSession.getConnectionHandler().send(infoMessage);
-                            }
+                    if(isChatExist==true) {
+                        for (int i = 2; i < chatSendMessage.getArgs().length; i++) {
+                            sendMessage = sendMessage.concat(chatSendMessage.getArgs()[i]).concat(" ");
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        ChatMessage chatMessage = new ChatMessage(sendMessage, session.getSessionUser().getId(), idChat, new java.util.Date().toString());
+                        messageLocalStore.addMessage(chatMessage);
+                        usersByChat = messageLocalStore.getParticipantByChatId(idChat);
+                        Message infoMessage = new Message();
+                        infoMessage.setType(CommandType.USER_INFO);
+                        infoMessage.setInfoString(sendMessage);
+                        try {
+                            for (Long userId : usersByChat) {
+                                Session userSession = sessionManager.getSessionByUser(userId);
+                                if (userSession != null) {
+                                    userSession.getConnectionHandler().send(infoMessage);
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                     if (isChatExist == false) {
                         Message newInfoMessage = new Message();

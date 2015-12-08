@@ -3,7 +3,7 @@ package ru.mail.track.comands;
 import ru.mail.track.message.*;
 import ru.mail.track.net.SessionManager;
 import ru.mail.track.session.Session;
-import ru.mail.track.thread.AuthorizationService;
+import ru.mail.track.AuthorizationService;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class UserCommand implements Command {
 
-    private UserStore userLocalStore = new UserLocalStore();
+    private UserStore userLocalStore ;
     private SessionManager sessionManager;
     private AuthorizationService authorizationService ;
 
@@ -67,6 +67,7 @@ public class UserCommand implements Command {
                 }
                 else {
                     session.getSessionUser().setName(login);
+                    userLocalStore.update(session.getSessionUser());
                     Message infoMessage = new Message();
                     infoMessage.setType(CommandType.USER_INFO);
                     infoMessage.setInfoString("You new login: " + login);

@@ -1,5 +1,9 @@
 package ru.mail.track.message;
 
+import ru.mail.track.jdbc.DAO.DAOFactory;
+import ru.mail.track.jdbc.DAO.Exception.PersistException;
+import ru.mail.track.jdbc.DAO.GenericDAO;
+
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -8,59 +12,102 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class UserLocalStore implements UserStore {
 
-  public   ArrayList<User> userArrayList = new ArrayList<User>();
+    public GenericDAO userDao;
+
+public UserLocalStore(DAOFactory daoFactory){
+    try {
+        userDao = daoFactory.getDao(daoFactory.getContext(), User.class);
+    } catch (PersistException e) {
+        e.printStackTrace();
+    }
+}
+
+    public   ArrayList<User> userArrayList = new ArrayList<User>();
     public AtomicLong id = new AtomicLong(0);
 
     @Override
     public User addUser(User user) {
-       userArrayList.add(user);
-        return user;
+        try {
+
+            userDao.persist(user);
+        } catch (PersistException e) {
+            e.printStackTrace();
+        }
+       return user;
+
     }
+
 
     @Override
     public User getUser(String login, String pass) {
-        for (User user: userArrayList){
-            if(login!=null && login.equals(user.getName())){
-                if(pass!=null && pass.equals(user.getPass())){
+        ArrayList<User> list;
+        try {
+            list = userDao.getAll();
+            for (User user : list) {
+                if (user.getName().equals(login) && user.getPass().equals(pass)){
                     return user;
                 }
             }
+        } catch (PersistException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public User getUserById(AtomicLong id) {
-        for (User user: userArrayList){
-            if(id.get()==user.getId()){
-                return user;
-            }
+    public User getUser(Long id) {
+        try {
+            User user = (User)userDao.getByPK(id.intValue());
+            return user;
+        } catch (PersistException e) {
+            e.printStackTrace();
         }
         return null;
     }
+
+
 
     @Override
     public boolean isUserExist(String name, String password) {
-        boolean isUser=false;
-        for(User user: userArrayList){
-            if(name!=null && name.equals(user.getName())){
-                if(user.getPass()!=null && password.equals(user.getPass())){
-                    isUser=true;
+        ArrayList<User> list;
+        try {
+            list = userDao.getAll();
+            for (User user : list) {
+                if (user.getName().equals(name) && user.getPass().equals(password)){
+                    return true;
                 }
             }
+        } catch (PersistException e) {
+            e.printStackTrace();
         }
-        return isUser;
+        return false;
     }
 
     @Override
     public boolean isUserExist(String name) {
 
-        boolean isUser=false;
-        for(User user: userArrayList){
-            if(name!=null && name.equals(user.getName())){
-                isUser=true;
+
+        ArrayList<User> list;
+        try {
+            list = userDao.getAll();
+            for (User user : list) {
+                if (user.getName().equals(name)){
+                    return true;
+                }
             }
+        } catch (PersistException e) {
+            e.printStackTrace();
         }
-        return isUser;
+        return false;
+    }
+
+
+    @Override
+    public void update(User user) {
+        try {
+            userDao.update(user);
+        } catch (PersistException e) {
+            e.printStackTrace();
+        }
     }
 }
